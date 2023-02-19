@@ -1,7 +1,7 @@
 # fastcampus_video_crawling
 The program used to download videos purchased from fastcampus.
 
-본 코드는 2가지 파트로 구성되어 있습니다. 
+본 코드는 2가지 파트로 구성되어 있다.
  - Selenium 으로 강의 목록을 추출하여 Excel로 저장하는 부분(ext_lecture_info.py)
  - 저장된 Excel 파일을 이용하여 영상을 다운받는 부분(download_mp4.py)
 
