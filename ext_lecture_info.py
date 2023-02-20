@@ -6,11 +6,11 @@ from modules.tree import *
 from modules.general import Class_id
 from modules.utils import load_config
 
-def click_processing_dialog(driver, element, wait_time=2):
+def click_processing_dialog(driver, element, wait_time=5):
     element.click()
     process_dialog(driver, wait_time)
     
-def process_dialog(driver, wait_time = 2):
+def process_dialog(driver, wait_time = 5):
     try :
         driver.implicitly_wait(wait_time)
         dialog = driver.find_element(By.XPATH, value = f"//aside[@class='{Class_id.Dialog_Class_id}']")
@@ -75,17 +75,24 @@ if __name__== "__main__":
         print('login 버튼 클릭 실패')
 
     # Login 
-    try: 
+    while True: 
         ## ID/PASSWORD 입력
         driver.find_element(By.ID, 'user-email').send_keys(args.user_email)
         driver.find_element(By.ID, 'user-password').send_keys(args.user_password)
-        driver.implicitly_wait(1)
+        driver.implicitly_wait(5)
         
         ## 로그인 
         wait.until(EC.element_to_be_clickable((By.CLASS_NAME, Class_id.Login_Class_id)))
         driver.find_element(By.CLASS_NAME, Class_id.Login_Class_id).click()
-    except: 
-        print('ID/PASSWORD 입력 실패')
+        
+        for i in range(10):
+            if driver.current_url == 'https://fastcampus.co.kr/':
+                break
+            else: 
+                driver.implicitly_wait(1)
+        
+        if driver.current_url == 'https://fastcampus.co.kr/':
+            break
     driver.implicitly_wait(wait_time)
     
     # 강의 페이지 이동 
@@ -115,6 +122,10 @@ if __name__== "__main__":
 
     try : 
         for part_seq, part_element in enumerate(Part_elements): 
+            
+            if args.start_part > part_seq + 1: 
+                print('Part {} Skip'.format(part_seq+1))
+                continue
             
             ## Part Text 추출 
             part_title = part_element.find_element(by=By.CLASS_NAME, value=Class_id.Part_Text_Class_id).text
@@ -162,8 +173,8 @@ if __name__== "__main__":
                     lecture_info_collect(driver, lecture_elements, chapter_node)
 
     except: 
-        print('강의 정보 수집 중 오류 발생')
-        print('현재까지의 영상 정보 저장')
+        print('------------- 강의 정보 수집 중 오류 발생 -------------')
+        print('------------- 현재까지의 영상 정보 저장 -------------')
     finally:
         df = class_node.get_children_df(type = LectureNode, attributes = ['parent.parent.parent.title', 'parent.parent.title', 'parent.title', 'title', 'url'])
         df.to_excel('result.xlsx')

@@ -24,7 +24,6 @@ class Node:
     
     def get_children_df(self, type, attributes:list):
         df = pd.DataFrame()
-        print(f'{self.title}.children : ', self.children)
         for child in self.children:
             if isinstance(child, type):
                 df = pd.concat([df, pd.DataFrame([self.get_attributes(child, attributes)], columns = attributes)], axis=0)
