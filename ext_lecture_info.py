@@ -165,7 +165,7 @@ if __name__== "__main__":
         print('강의 정보 수집 중 오류 발생')
         print('현재까지의 영상 정보 저장')
     finally:
-        df = class_node.get_children_df(type = LectureNode, attributes = ['parent.parent.title', 'parent.title', 'title', 'url'])
+        df = class_node.get_children_df(type = LectureNode, attributes = ['parent.parent.parent.title', 'parent.parent.title', 'parent.title', 'title', 'url'])
         df.to_excel('result.xlsx')
         # class_node.print_node()
         

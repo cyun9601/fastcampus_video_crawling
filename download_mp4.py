@@ -25,7 +25,7 @@ def download_video(data):
     data['download_TF'] = False
     for index, row in tqdm(data.iterrows(), total = len(data)):
         row = row.fillna('')
-        save_dir = os.path.join(row['save_dir'], row['parent.parent.title'], row['parent.title'])
+        save_dir = os.path.join(row['save_dir'], row['parent.parent.parent.title'], row['parent.parent.title'], row['parent.title'])
         os.makedirs(save_dir, exist_ok=True)
         
         ## 영상 다운          

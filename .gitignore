@@ -1,2 +1,3 @@
 /lecture/*
 *.xlsx
+__pycache__
